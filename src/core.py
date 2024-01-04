@@ -1,4 +1,3 @@
-
 import requests
 import json
 import string
@@ -63,7 +62,7 @@ def make_request(i):
 
     if res.status_code == 200:
         id_token = res.json().get("idToken")
-        refRes = set_referred(id_token, "tmkha")
+        refRes = set_referred(id_token, "irzko")
         if (refRes.status_code == 200):
             print(f"[{i}] OK", )
             return True
