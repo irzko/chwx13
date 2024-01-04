@@ -74,4 +74,4 @@ def make_request(i):
 
 def run():
     with ThreadPoolExecutor(max_workers=6) as executor:
-        executor.map(make_request, range(1))
+        executor.map(make_request, range(2))
