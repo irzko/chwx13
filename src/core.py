@@ -4,6 +4,7 @@ import json
 import string
 import random
 from concurrent.futures import ThreadPoolExecutor
+import threading
 
 def generate_random_string(length):
   return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
@@ -57,6 +58,8 @@ def set_referred(id_token: str, referred_by: str):
     );
     return res
 
+stop_flag = threading.Event()
+
 def make_request(i):
     email = generate_random_string(20) + "@gmail.com"
     res = sign_up(email, generate_random_string(15))
@@ -66,13 +69,12 @@ def make_request(i):
         refRes = set_referred(id_token, "tmkha")
         if (refRes.status_code == 200):
             print(f"[{i}] OK", )
-            return True
         else:
             print(f"[{i}] Error: ", refRes.json().get("error").get("message"))
-            return False
+            stop_flag.set()
     else:
         print(f"[{i}] Error: ", res.json().get("error").get("message"))
-        return False
+        stop_flag.set()
 
 
 def run():
