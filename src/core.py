@@ -66,12 +66,19 @@ def make_request(i):
         refRes = set_referred(id_token, "tmkha")
         if (refRes.status_code == 200):
             print(f"[{i}] OK", )
+            return True
         else:
             print(f"[{i}] Error: ", refRes.json().get("error").get("message"))
+            return False
     else:
         print(f"[{i}] Error: ", res.json().get("error").get("message"))
+        return False
 
 
 def run():
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        executor.map(make_request, range(20))
+    # with ThreadPoolExecutor(max_workers=3) as executor:
+    #     executor.map(make_request, range(20))
+    for i in range(500):
+        result = make_request(i)
+        if result == False:
+            break
