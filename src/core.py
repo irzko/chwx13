@@ -76,9 +76,5 @@ def make_request(i):
 
 
 def run():
-    # with ThreadPoolExecutor(max_workers=3) as executor:
-    #     executor.map(make_request, range(20))
-    for i in range(500):
-        result = make_request(i)
-        if result == False:
-            break
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        executor.map(make_request, range(18))
