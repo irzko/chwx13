@@ -1,9 +1,10 @@
+
 import requests
 import json
 import string
 import random
-from concurrent.futures import ThreadPoolExecutor
 import threading
+import concurrent.futures
 
 def generate_random_string(length):
   return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
@@ -57,25 +58,27 @@ def set_referred(id_token: str, referred_by: str):
     );
     return res
 
+
 stop_flag = threading.Event()
 
 def make_request(i):
-    email = generate_random_string(20) + "@gmail.com"
-    res = sign_up(email, generate_random_string(15))
+    if not stop_flag.is_set():
+        email = generate_random_string(20) + "@gmail.com"
+        res = sign_up(email, generate_random_string(15))
 
-    if res.status_code == 200:
-        id_token = res.json().get("idToken")
-        refRes = set_referred(id_token, "irzko")
-        if (refRes.status_code == 200):
-            print(f"[{i}] OK", )
+        if res.status_code == 200:
+            id_token = res.json().get("idToken")
+            refRes = set_referred(id_token, "irzko")
+            if refRes.status_code == 200:
+                print(f"[{i}] OK")
+            else:
+                print(f"[{i}] Error: ", refRes.json().get("error").get("message"))
+                stop_flag.set()
         else:
-            print(f"[{i}] Error: ", refRes.json().get("error").get("message"))
+            print(f"[{i}] Error: ", res.json().get("error").get("message"))
             stop_flag.set()
-    else:
-        print(f"[{i}] Error: ", res.json().get("error").get("message"))
-        stop_flag.set()
-
 
 def run():
-    with ThreadPoolExecutor(max_workers=6) as executor:
-        executor.map(make_request, range(18))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
+        futures = [executor.submit(make_request, i) for i in range(300)]
+        concurrent.futures.wait(futures, return_when=concurrent.futures.FIRST_EXCEPTION)
