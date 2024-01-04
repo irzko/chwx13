@@ -1,8 +1,8 @@
+import os
 import requests
 import json
 import string
 import random
-from concurrent.futures import ThreadPoolExecutor
 
 def generate_random_string(length):
   return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
@@ -69,8 +69,3 @@ def make_request(i):
             print(f"[{i}] Error: ", refRes.json().get("error").get("message"))
     else:
         print(f"[{i}] Error: ", res.json().get("error").get("message"))
-
-if __name__ == "__main__":
-  with ThreadPoolExecutor(
-      max_workers=5) as executor:
-    executor.map(make_request, range(150))
