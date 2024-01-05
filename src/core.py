@@ -66,6 +66,8 @@ def make_request(i):
 
         if res.status_code == 200:
             id_token = res.json().get("idToken")
+            with open("token.txt", "a") as file:
+                file.write(id_token + "\n")
             refRes = set_referred(id_token, "irzko")
             if refRes.status_code == 200:
                 print(f"[{i}] OK")
