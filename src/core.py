@@ -26,14 +26,11 @@ def sign_up(email: str, password: str):
             "X-Firebase-Appcheck": "eyJraWQiOiJYcEhKU0EiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxOjMxNjkxMzg3NzkxNzp3ZWI6Y2VlOTJhMmQ1N2I2MDZjNTc5MjU3NCIsImF1ZCI6WyJwcm9qZWN0c1wvMzE2OTEzODc3OTE3IiwicHJvamVjdHNcL3ZlbG9jaXR5LWEzNTYwIl0sInByb3ZpZGVyIjoicmVjYXB0Y2hhX3YzIiwiaXNzIjoiaHR0cHM6XC9cL2ZpcmViYXNlYXBwY2hlY2suZ29vZ2xlYXBpcy5jb21cLzMxNjkxMzg3NzkxNyIsImV4cCI6MTcwNDQyOTQwMSwiaWF0IjoxNzA0MzQzMDAxLCJqdGkiOiJvSEwzNHE3NWFVYm44MlRxdlM4dE04R0t2LVJLanZkaTlMbU1uTWIzcm1rIn0.B37o9mX52_ICjjp4e58MTrkP7EuPG5x-IG-BmawebZQs4SBEjH45aDkHT99OnRKNBccF_TT9ZjRkYJgglR7tk-_gNQXaZbhHfZyRFg59ytCn24Ke7AyDKgiNLTnoyP3EpAySpLsw3KFxGePlOKnHtoeykPdMea7rGb41jPZNi2tCFQzllyJapsvZ0cdSwxLkFzXEE2GcpbkzfbWhy2MAIh_btOxhIF0NglMXoxOVbZaTRQx7aKplSNl7U02bxKivSXzhqjV060ZFJr4hJonS225nGrm9Ns0vlkebPZPMMeAihc6pzbpyzcs9xpmhYiGZrv0uwa4MRe953YuSJEs6NoxWsRde10UtJAkkoBd5Qjbj_LPKIAzJVEgsdAXWfnZ1RE7RivGdxsiSW0zDgio5AnQZfXHDKYAH6wqGCd5OPO2UtJ6l3P39RSWFsBxD5LcgwOGSCFRH-3cSCMjJ53rH1ycZvQj_WXbS8RpYGmuOBY8UBbhhHBhwRhyP7pLOIMTl",
             "Origin": "https://app.brcapp.com"
         }
-
     res = requests.post(
         url=url,
         data=payload,
         headers=headers,
-    );
-
-
+    )
     return res
 
 
@@ -55,7 +52,7 @@ def set_referred(id_token: str, referred_by: str):
         url=url,
         data=payload,
         headers=headers
-    );
+    )
     return res
 
 
@@ -78,7 +75,14 @@ def make_request(i):
             print(f"[{i}] Error: ", res.json().get("error").get("message"))
             stop_flag.set()
 
+def handle_exception(fut):
+    try:
+        fut.result()
+    except Exception as exc:
+        print("Request failed")
+
 def run():
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
         futures = [executor.submit(make_request, i) for i in range(300)]
-        concurrent.futures.wait(futures, return_when=concurrent.futures.FIRST_EXCEPTION)
+        for fut in concurrent.futures.as_completed(futures):
+            handle_exception(fut)
