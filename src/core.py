@@ -70,14 +70,9 @@ def make_request(i):
     else:
         raise Exception("Error:", res.json().get("error").get("message"))
 
-def handle_exception(fut):
-    try:
-        fut.result()
-    except Exception as exc:
-        print(exec)
 
 def run():
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
         futures = [executor.submit(make_request, i) for i in range(300)]
-        for fut in concurrent.futures.as_completed(futures):
-            handle_exception(fut)
+        # for fut in concurrent.futures.as_completed(futures):
+        #     pass
