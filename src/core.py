@@ -6,6 +6,8 @@ import random
 import threading
 import concurrent.futures
 
+X_FIREBASE_APPCHECK = "eyJraWQiOiJYcEhKU0EiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxOjMxNjkxMzg3NzkxNzp3ZWI6Y2VlOTJhMmQ1N2I2MDZjNTc5MjU3NCIsImF1ZCI6WyJwcm9qZWN0c1wvMzE2OTEzODc3OTE3IiwicHJvamVjdHNcL3ZlbG9jaXR5LWEzNTYwIl0sInByb3ZpZGVyIjoicmVjYXB0Y2hhX3YzIiwiaXNzIjoiaHR0cHM6XC9cL2ZpcmViYXNlYXBwY2hlY2suZ29vZ2xlYXBpcy5jb21cLzMxNjkxMzg3NzkxNyIsImV4cCI6MTcwNDQ2MTc5NywiaWF0IjoxNzA0NDU5OTk3LCJqdGkiOiJZaGdnOXpNTWJFZlFVVFZLemdSejB3WDF6bFVGV3ZiMF8tV01tVjBISWd3In0.Kig2xBU_Hso3UzE9Za0Bgpwcq7oB5ERe618yKE_EWrWJyZbThkfZJFiqC6P5HOWVfm7MwX4e1sAxDeCsTzwnNTY-73_wJ7nFq5suS7FX5VoydgsY3y2NqJvlX4ykkrnowdyn_CJvc8dDwEfbqzzUDTwDSkQ_4BDJRWAC2eqNpteGk-pAJoxP3MKvOAuzFLCRY5GyIhTnh_y5pT3kr-0rFTESu5iB-C2YrTkK5HqSlGbzFA0sWadjPVJUrdbpdaVHo2GoSG6znnRXigS5iTQFNECXos4074mB6Us01PS0VAsjsGK9-uZ7bhfuY-lknpNRWUebbGAEMzj0TLDH6bnQ4GB8cc7QN6VBoR0gQzKIqZXH1d75ryfgYaw1Qlqvz8OzxXBpMqqASp52oJVu2euYGx2thLp-w9FF6ieaOTAV_m7BrD0lR5vtQ840G_Hw-iIF69b9ww79wl1uOzFtMT73WGSzjlUriH7JhcrPz7eaN5XodqYGkfZsKsn-6VfGr0sf"
+
 def generate_random_string(length):
   return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
 
@@ -23,7 +25,7 @@ def sign_up(email: str, password: str):
     headers = {
             "Content-Type": "application/json",
             "Accept": "*/*",
-            "X-Firebase-Appcheck": "eyJraWQiOiJYcEhKU0EiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxOjMxNjkxMzg3NzkxNzp3ZWI6Y2VlOTJhMmQ1N2I2MDZjNTc5MjU3NCIsImF1ZCI6WyJwcm9qZWN0c1wvMzE2OTEzODc3OTE3IiwicHJvamVjdHNcL3ZlbG9jaXR5LWEzNTYwIl0sInByb3ZpZGVyIjoicmVjYXB0Y2hhX3YzIiwiaXNzIjoiaHR0cHM6XC9cL2ZpcmViYXNlYXBwY2hlY2suZ29vZ2xlYXBpcy5jb21cLzMxNjkxMzg3NzkxNyIsImV4cCI6MTcwNDQzOTEyOCwiaWF0IjoxNzA0NDM3MzI4LCJqdGkiOiJ3bVMzSE84T2ZoMS11VWI4cVJJSkNybDFJNUswOHBtOFlIZkk1Q3dCTjhJIn0.EdUjB5jogZI2btEYtFIB0a9gTKp0MzgWJmcceHlIKltnXIoyDzLA68acT8mt-zvFV11VCm2JfuYhpFI9KJzbPWZY3AADYSoyj4gFSOsjrmPTIlfCdOUqAlzSLFIZCH1wMWcLNXXsumXr6Xn6OGRfMVIaSmI96fDLwSzYqSwB_1Vq8At0D4x8P9WNEopbA6tnEvs-l2pJ4hFMI3tPCnLAz5kxHXWkydm1AjgU1XLF9G8P0O_XTVvaj6Jxdo4BMIyq_RkqLY8kGPzJyzvwjjOOkjMxz2yPWOx5Of3c2L0zlyZyeBW9rjFlGiozCdzCtfxGTSPwsA2WE6BrPuaN1momTQYOvygZOy2UalW8z8uCeqOp-JQ5jEcJ2oyKK0RUDQBPPI8bQW3XSn3nD0Xy64ruYdtlUoPxNLFg_e9Sr3Bb0UnX-sVgw6Qb85PaLrgBifLtfMZXwvWWpRPEpFQYDiyh09d__6IFNYYJSYDilHuXEdLh4LnKP9PVXFrt7mqPDBOH",
+            "X-Firebase-Appcheck": X_FIREBASE_APPCHECK,
             "Origin": "https://app.brcapp.com"
         }
     res = requests.post(
