@@ -3,7 +3,6 @@ import requests
 import json
 import string
 import random
-import threading
 import concurrent.futures
 
 def generate_random_string(length):
@@ -56,30 +55,26 @@ def set_referred(id_token: str, referred_by: str):
     return res
 
 
-stop_flag = threading.Event()
 
 def make_request(i):
-    if not stop_flag.is_set():
-        email = generate_random_string(20) + "@gmail.com"
-        res = sign_up(email, generate_random_string(15))
+    email = generate_random_string(20) + "@gmail.com"
+    res = sign_up(email, generate_random_string(15))
 
-        if res.status_code == 200:
-            id_token = res.json().get("idToken")
-            refRes = set_referred(id_token, "irzko")
-            if refRes.status_code == 200:
-                print(f"[{i}] OK")
-            else:
-                print(f"[{i}] Error: ", refRes.json().get("error").get("message"))
-                stop_flag.set()
+    if res.status_code == 200:
+        id_token = res.json().get("idToken")
+        refRes = set_referred(id_token, "irzko")
+        if refRes.status_code == 200:
+            print(f"[{i}] OK")
         else:
-            print(f"[{i}] Error: ", res.json().get("error").get("message"))
-            stop_flag.set()
+            raise Exception("Error: ", refRes.json().get("error").get("message"))
+    else:
+        raise Exception("Error:", res.json().get("error").get("message"))
 
 def handle_exception(fut):
     try:
         fut.result()
     except Exception as exc:
-        print("Request failed")
+        print(exec)
 
 def run():
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
