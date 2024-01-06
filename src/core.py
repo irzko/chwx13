@@ -90,7 +90,8 @@ def run():
     for _ in concurrent.futures.as_completed(futures):
       pass
 
-  
+  print(f"Đã tạo thành công {len(token_list)} tài khoản!")
+  print("Tiến hành ref...")
   with concurrent.futures.ThreadPoolExecutor(max_workers=len(
       token_list)) as executor:
     executor.map(ref_cross, range(len(token_list)))
