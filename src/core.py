@@ -5,9 +5,17 @@ import random
 import threading
 import concurrent.futures
 
-X_FIREBASE_APPCHECK = "eyJraWQiOiJYcEhKU0EiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxOjMxNjkxMzg3NzkxNzp3ZWI6Y2VlOTJhMmQ1N2I2MDZjNTc5MjU3NCIsImF1ZCI6WyJwcm9qZWN0c1wvMzE2OTEzODc3OTE3IiwicHJvamVjdHNcL3ZlbG9jaXR5LWEzNTYwIl0sInByb3ZpZGVyIjoicmVjYXB0Y2hhX3YzIiwiaXNzIjoiaHR0cHM6XC9cL2ZpcmViYXNlYXBwY2hlY2suZ29vZ2xlYXBpcy5jb21cLzMxNjkxMzg3NzkxNyIsImV4cCI6MTcwNDQ3OTMwMSwiaWF0IjoxNzA0NDc3NTAxLCJqdGkiOiJ1M0hzdFZVZ3dmOFdIcnBocmlSckRjaDlaX3F3TDlzQ2RhbFlJejR2SUI4In0.pOJ6Dz-27OxsdB2M8nzuIy5AVPMP5VvAHQsejYMi2ty_GEm9miGOb93KcnvmUciUPQL5NqcSVWjpNyYGkR9-vV0hO-te5OppcvWN6bhwzBkA1SlJJjMShr9fU3KEaNui3I8iAIoK3UzsETiGAtL4HJ1co-CLtXdIiSkS-2WVP7nYN2ay2sHCk4hDXXKrQec34maHJS3jdnRzSMZCooVaNZiEzkG_Gf7K_S3RCVVR8yYDYOx5rtyrvPfIH8uVxR_Zk_I4Hmyp8TGtR_ngf2w41N2eQlnUYpxIobKOw8bb6tHTi_60Zaq8pXOzMEGxM28vfW42U7rXt_mktyBMMGaQn6TxDTOgV-ky6WYRWW35r9gDIPXAWUUg6W5Ri9EiEwJcGQYHqlUSpUQC9BOhWxzFR65W9WZKMC1tResRr5jPgZXnal2t6vzhFu6gdV87yf4xki_40Dv098ghQxbzbcp_Q563FKOyVQFW5OK6j7tadCJNppa8Lk19M-ooravb0qlk"
+
+
 ID_1 = "fanez"
 ID_2 = "irzko"
+
+def get_x_firebase_appcheck():
+    spread_sheet_id = "1RCgSI_iUxB_u4zQBrvYL8w0AE2WzhiBmyHVATUCNtB0"
+    sheet_id = "0"
+    res = requests.get(f"https://docs.google.com/spreadsheets/d/{spread_sheet_id}/export?format=csv&id={spread_sheet_id}&gid={sheet_id}")
+    return res.text
+X_FIREBASE_APPCHECK = get_x_firebase_appcheck()
 
 def generate_random_string(length):
   return ''.join(random.choice(string.ascii_lowercase) for _ in range(length))
