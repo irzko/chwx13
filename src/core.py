@@ -89,9 +89,11 @@ def run():
     futures = [executor.submit(get_clone, i) for i in range(300)]
     for _ in concurrent.futures.as_completed(futures):
       pass
-
-  print(f"Đã tạo thành công {len(token_list)} tài khoản!")
-  print("Tiến hành ref...")
-  with concurrent.futures.ThreadPoolExecutor(max_workers=len(
-      token_list)) as executor:
-    executor.map(ref_cross, range(len(token_list)))
+  if len(token_list) > 0:
+    print(f"Đã tạo thành công {len(token_list)} tài khoản!")
+    print("Tiến hành ref...")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(
+        token_list)) as executor:
+      executor.map(ref_cross, range(len(token_list)))
+  else:
+    print("Không thể tạo tài khoản!")
