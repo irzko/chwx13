@@ -6,9 +6,28 @@ import threading
 import concurrent.futures
 
 
+def get_data_gsheet(spread_sheet_id: str, sheet_id: str):
+    res = requests.get(f"https://docs.google.com/spreadsheets/d/{spread_sheet_id}/export?format=csv&id={spread_sheet_id}&gid={sheet_id}")
+    return res.text
 
-ID_1 = "fanez"
-ID_2 = "irzko"
+def csv_to_object(csv: str):
+  lines: list[str] = csv.split("\n")
+  headers: list[str] = lines[0].split(",")
+  for line in lines:
+    if line == lines[0]:
+      continue
+    obj = {}
+    currentline = line.split(",")
+    for j in range(len(headers)):
+      obj[headers[j].strip()] = currentline[j].strip()
+  return obj
+
+data = get_data_gsheet("1RCgSI_iUxB_u4zQBrvYL8w0AE2WzhiBmyHVATUCNtB0", "345744275")
+config = csv_to_object(data)
+
+X_FIREBASE_APPCHECK = config["x_firebase_appcheck"]
+USERNAME_1 = config["username_1"]
+USERNAME_2 = config["username_2"]
 
 def get_x_firebase_appcheck():
     spread_sheet_id = "1RCgSI_iUxB_u4zQBrvYL8w0AE2WzhiBmyHVATUCNtB0"
@@ -76,8 +95,8 @@ def get_clone(i):
 
 def ref_cross(i):
   while True:
-    set_referred(token_list[i], ID_1)
-    refRes = set_referred(token_list[i], ID_2)
+    set_referred(token_list[i], USERNAME_1)
+    refRes = set_referred(token_list[i], USERNAME_2)
     if refRes.status_code == 200:
       print(f"[{i}] -> OK")
     else:
